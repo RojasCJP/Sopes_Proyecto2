@@ -1,0 +1,5 @@
+// agregar $PATH
+export PATH="$PATH=(go env PATH)/bin"
+
+// creacion de protoc
+protoc chat.proto --go-grpc_out=./chat
