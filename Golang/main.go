@@ -2,12 +2,12 @@ package main
 
 import (
 	"fmt"
-	"servidor/gRPC/client"
+	"servidor/gRPC"
 	"servidor/gRPC/server"
 )
 
 func main() {
 	fmt.Println("hola buenas")
-	go client.Export()
-	server.Export()
+	go server.Export()
+	gRPC.LevantarServidor()
 }

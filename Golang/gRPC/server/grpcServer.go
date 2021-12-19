@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"log"
-	"math/rand"
 	"net"
 	"time"
 
@@ -26,10 +25,9 @@ type UserManagementServer struct {
 	pb.UnimplementedUserManagmentServer
 }
 
-func (s *UserManagementServer) CreateNewUser(ctx context.Context, in *pb.NewUser) (*pb.User, error) {
+func (s *UserManagementServer) CreateNewUser(ctx context.Context, in *pb.User) (*pb.User, error) {
 	log.Printf("Received: %v", in.GetName())
-	var user_id int32 = int32(rand.Intn(1000))
-	insertUser := pb.User{Name: in.GetName(), Age: in.GetAge(), Id: user_id}
+	insertUser := pb.User{Name: in.Name, Age: in.Age, VaccineType: in.VaccineType, Location: in.Location, NDose: in.NDose}
 	client, context := Connection()
 	InsertMongo(client, context, insertUser)
 	return &insertUser, nil
@@ -82,7 +80,7 @@ func InsertMongo(client *mongo.Client, ctx context.Context, data pb.User) bool {
 	  Insert documents
 	*/
 	var docs []interface{}
-	docs = append(docs, bson.D{{"name", data.Name}, {"age", data.Age}, {"id", data.Id}})
+	docs = append(docs, bson.D{{"name", data.Name}, {"location", data.Location}, {"age", data.Age}, {"vaccine_type", data.VaccineType}, {"n_dose", data.NDose}})
 
 	res, insertErr := collection.InsertMany(ctx, docs)
 	if insertErr != nil {

@@ -8,6 +8,8 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"servidor/gRPC/client"
+	pb "servidor/gRPC/management"
 	"servidor/structs"
 	"time"
 
@@ -19,7 +21,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-var client *mongo.Client
+var _client *mongo.Client
 var _context context.Context
 
 func Connection() (*mongo.Client, context.Context) {
@@ -121,7 +123,8 @@ func insertData(response http.ResponseWriter, request *http.Request) {
 		response.Write([]byte("{\"error\":\"error en la decodificacion de datos\"}"))
 		panic(err)
 	}
-	trigger := InsertMongo(client, _context, persona)
+	personaInsert := pb.User{Name: persona.Name, Age: int32(persona.Age), Location: persona.Location, VaccineType: persona.Vaccine_type, NDose: int32(persona.N_dose)}
+	trigger := client.Export(personaInsert)
 	if trigger {
 		response.Write([]byte("{\"error\":\"error al insertar datos\"}"))
 		panic("error al insertar datos")
