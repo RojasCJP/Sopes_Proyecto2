@@ -1,4 +1,4 @@
-package main
+package server
 
 import (
 	"context"
@@ -7,7 +7,8 @@ import (
 	"net"
 	"time"
 
-	pb "servidor/management"
+	pb "servidor/gRPC/management"
+	"servidor/structs"
 
 	"google.golang.org/grpc"
 
@@ -22,10 +23,6 @@ const (
 
 type UserManagementServer struct {
 	pb.UnimplementedUserManagmentServer
-}
-
-func main() {
-	Export()
 }
 
 func (s *UserManagementServer) CreateNewUser(ctx context.Context, in *pb.User) (*pb.User, error) {
@@ -91,6 +88,22 @@ func InsertMongo(client *mongo.Client, ctx context.Context, data pb.User) bool {
 		log.Fatal("insert error", insertErr)
 	}
 	fmt.Println(res)
+	/*
+		Iterate a cursor and print it
+	*/
+	cur, currErr := collection.Find(ctx, bson.D{})
+
+	if currErr != nil {
+		trigger = true
+		log.Fatal("find error", currErr)
+	}
+	defer cur.Close(ctx)
+
+	var posts []structs.Prueba
+	if err := cur.All(ctx, &posts); err != nil {
+		trigger = true
+		log.Fatal("cur all", err)
+	}
 
 	defer client.Disconnect(ctx)
 	return trigger

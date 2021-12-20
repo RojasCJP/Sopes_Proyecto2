@@ -1,0 +1,15 @@
+syntax = "proto3";
+package management;
+option go_package = "./management;management";
+
+service UserManagment {
+    rpc CreateNewUser (User) returns (User) {}
+}
+
+message User {
+    string name = 1;
+    int32 age = 2;
+    string vaccine_type  = 3;
+    string location = 4;
+    int32 n_dose = 5;   
+}
