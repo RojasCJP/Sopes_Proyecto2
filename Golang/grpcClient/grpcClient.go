@@ -18,7 +18,7 @@ import (
 )
 
 const (
-	address = "localhost:50051"
+	address = "172.19.0.4:50051"
 )
 
 func main() {
@@ -35,6 +35,7 @@ func LevantarServidor() {
 		port = "4300"
 	}
 	router.HandleFunc("/insert", insertData).Methods("POST")
+	router.HandleFunc("/test", echoEndPoint).Methods("POST")
 	fmt.Println("server in port " + port)
 	http.ListenAndServe(":"+port, handlers.CORS(headers, methods, origins)(router))
 }
@@ -45,6 +46,7 @@ func insertData(response http.ResponseWriter, request *http.Request) {
 		response.Write([]byte("{\"error\":\"error en la entrada de datos\"}"))
 		panic(errRead)
 	}
+
 	persona := Persona{}
 	err := json.Unmarshal(data, &persona)
 	if err != nil {
@@ -60,12 +62,20 @@ func insertData(response http.ResponseWriter, request *http.Request) {
 	response.Write([]byte("{\"respuesta\":\"insertado correctamente\"}"))
 }
 
+func echoEndPoint(response http.ResponseWriter, request *http.Request) {
+	data, errRead := ioutil.ReadAll(request.Body)
+	if errRead != nil {
+		response.Write([]byte("{\"error\":\"error en la entrada de datos\"}"))
+	}
+	fmt.Println(string(data))
+	response.Write(data)
+}
+
 func Export(user pb.User) bool {
 	trigger := false
 	conn, err := grpc.Dial(address, grpc.WithInsecure(), grpc.WithBlock())
 
 	if err != nil {
-		log.Fatal("did not connect: %v", err)
 		trigger = true
 	}
 	defer conn.Close()
@@ -76,7 +86,6 @@ func Export(user pb.User) bool {
 
 	r, err := c.CreateNewUser(ctx, &user)
 	if err != nil {
-		log.Fatalf("could not create user: %v", err)
 		trigger = true
 	}
 	log.Printf(`User Details:
