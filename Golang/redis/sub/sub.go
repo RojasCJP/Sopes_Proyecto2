@@ -10,8 +10,11 @@ import (
 )
 
 type User struct {
-	Name  string `json:"name"`
-	Email string `json:"email"`
+	Name         string `json:"name"`
+	Location     string `json:"location"`
+	Age          int    `json:"age"`
+	Vaccine_type string `json:"vaccine_type"`
+	N_dose       int    `json:"n_dose"`
 }
 
 var ctx = context.Background()
