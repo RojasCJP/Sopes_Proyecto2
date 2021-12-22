@@ -2,7 +2,7 @@ const express = require('express')
 const cors = require('cors')
 const app = express()
 
-app.set('port', 3000)
+app.set('port', 10000)
 app.use(cors([
     {
         origin: "*",
@@ -23,7 +23,7 @@ const ws = require('socket.io')(server, {
     }
 })
 
-// ************* conexion a base
+// ************* conexion a MongoDB
 const mongoose = require('mongoose')
 const url = 'mongodb://localhost/SopesProyecto2'
 
@@ -39,13 +39,41 @@ const personaSchema = mongoose.Schema({
 
 const PersonaModel = mongoose.model('datos', personaSchema)
 
-const mostrar = async () => {
+mostrar = async () => {
     const personas = await PersonaModel.find()
     console.log(personas)
 }
 
-mostrar()
-// ************* conexion a base
+// mostrar()
+// ************* conexion a MongoDB
+
+// ************* conexion a Redis
+const redis = require('redis')
+const client = redis.createClient({
+    host: '0.0.0.0',
+    port: '6379',
+})
+
+client.set('foo', 'bar', function (err, reply) {
+    console.log(reply)
+})
+
+client.get('foo', function (err, reply) {
+    console.log(reply)
+})
+/* 
+client.set('foo', 'bar', (err, reply) => {
+    if (err) throw err
+    console.log("antes de repuesta")
+    console.log(reply)
+
+    client.get('foo', (err, reply) => {
+        if (err) throw err
+        console.log(reply)
+    })
+}) */
+
+// ************* conexion a Redis
 
 
 ws.on('connection', function (socket) {
