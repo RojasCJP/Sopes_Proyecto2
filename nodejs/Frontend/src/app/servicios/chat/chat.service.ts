@@ -10,7 +10,7 @@ import { MensajeInterface } from 'src/app/estructuras/mensaje_interface';
 export class ChatService {
 
   private socket: Socket;
-  private url = 'http://localhost:3000'; 
+  private url = 'http://localhost:10000'; 
 
   constructor() {
     this.socket = io(this.url)      // Realizar la conexion con el servidor
@@ -24,7 +24,7 @@ export class ChatService {
     })
   }
 
-  emit(eventName: string, data: MensajeInterface): void {
+  emit(eventName: string, data: any): void {
     this.socket.emit(eventName, data);
   }
 

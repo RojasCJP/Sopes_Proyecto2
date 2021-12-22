@@ -66,7 +66,7 @@ func main() {
 		} else if user.Age >= 71 && user.Age <= 80 {
 			redisClient.Incr(ctx, "range71_80")
 		} else {
-			redisClient.Incr(ctx, "range81_end")
+			redisClient.Incr(ctx, "range81_90")
 		}
 
 		// Save name to report the last five vaccinated

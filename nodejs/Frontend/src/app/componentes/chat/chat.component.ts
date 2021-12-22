@@ -36,16 +36,50 @@ export class ChatComponent implements OnInit {
   ctx3: any;
   @ViewChild('graf3') graf3: any;
   graf_barr: any;
+  rangos_valores: any
+  array_rangos: number[]
 
   constructor(private chatService: ChatService) {
-    /* this.segundos = [1,2,3,4,5,6,7]
-    this.cantidad = [10,20,30,40,50,60,70] */
+    this.array_rangos = [0,0,0,0,0,0,0,0,0]
   }
 
   ngOnInit(): void {
     this.chatService.listen('chat:message').subscribe((data) => {
       this.recibirMensaje(data);
     })
+
+    this.chatService.listen('chat:report').subscribe((data) => {
+      this.rangos_valores = data
+      if (data) { 
+        if(data.valor==null){data.valor=0}
+        if (data.id == 'range0_10') {
+          this.array_rangos[0]=data.valor
+        } else if (data.id == 'range11_20') {
+          this.array_rangos[1]=data.valor        
+        } else if (data.id == 'range21_30') {
+          this.array_rangos[2]=data.valor        
+        } else if (data.id == 'range31_40') {
+          this.array_rangos[3]=data.valor        
+        } else if (data.id == 'range41_50') {
+          this.array_rangos[4]=data.valor        
+        } else if (data.id == 'range51_60') {
+          this.array_rangos[5]=data.valor        
+        } else if (data.id == 'range61_70') {
+          this.array_rangos[6]=data.valor        
+        } else if (data.id == 'range71_80') {
+          this.array_rangos[7]=data.valor        
+        } else if (data.id == 'range81_end') {
+          this.array_rangos[8]=data.valor        
+        }
+        console.log(this.array_rangos)
+      }
+      this.graf_barr.update()
+      setTimeout(()=>this.chatService.emit("chat:report", "0"),1000);
+      
+      
+    })
+    this.chatService.emit("chat:report", "0");
+
   }
 
   ngAfterViewInit() {
@@ -100,10 +134,10 @@ export class ChatComponent implements OnInit {
     this.graf_barr = new Chart(this.ctx3, {
       type: 'bar',
       data: {
-        labels: ['1-15','16-30','31-45','46-60','61-75','76-90'],
+        labels: ['0-10','11-20','21-30','31-40','41-50','51-60', '61-70', '71-80', '81-end'],
         datasets: [{
           label: "",
-          data: [65, 60, 80, 81, 60, 90, 0],
+          data: this.array_rangos,
           backgroundColor: [
             'rgba(255, 99, 132, 0.2)',
             'rgba(255, 159, 64, 0.2)',
@@ -152,5 +186,7 @@ export class ChatComponent implements OnInit {
   recibirMensaje(data: MensajeInterface) {
     this.mensajes.push(data)
   }
+
+  
 
 }

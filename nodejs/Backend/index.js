@@ -48,35 +48,67 @@ mostrar = async () => {
 // ************* MongoDB *************
 
 // ************* Redis *************
-const redis = require('redis');
-const client = redis.createClient();
+const redis = require('redis')
+const client = redis.createClient()
+
 
 client.on("error", function (error) {
     console.error("Error en conexion: ", error)
 })
 
-client.on('connect', function() {
-  console.log('Connected!');
-});
+client.on('connect', function () {
+    console.log('Connected!')
+})
 
-client.get('range11_20', (err, reply) => {
-    if (err) console.log(err);
-    console.log(reply);
-});
+async function get_range(range) {
+    var respuesta = ""
+    client.get(range, (err, reply) => {
+        if (err) { console.log(err) }
+        respuesta = reply
+        ws.sockets.emit('chat:report', { valor: respuesta, id: range })
+    })
+
+
+
+}
 
 client.lrange('users', 0, 4, (err, reply) => {
-    if (err) console.log(err);
+    if (err) console.log(err)
     console.log(reply)
 })
 // ************* Redis *************
 
-ws.on('connection', function (socket) {
+var resultado = []
+ws.on('connection', async function (socket) {
     console.log('Nueva conexion: ', socket.id)
+    socket.on('chat:report', async (data) => {
+        get_range("range0_10")
+        get_range("range11_20")
+        get_range("range21_30")
+        get_range("range31_40")
+        get_range("range41_50")
+        get_range("range51_60")
+        get_range("range61_70")
+        get_range("range71_80")
+        get_range("range81_end")
+    })
 
-    // reportes
+
 
     socket.on('chat:message', (data) => {
         ws.sockets.emit('chat:message', data)
     })
-    // ...
+
 })
+
+async function getArray() {
+    get_range("range0_10")
+    get_range("range11_20")
+    get_range("range21_30")
+    get_range("range31_40")
+    get_range("range41_50")
+    get_range("range51_60")
+    get_range("range61_70")
+    get_range("range71_80")
+    get_range("range81_end")
+}
