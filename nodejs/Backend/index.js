@@ -23,7 +23,7 @@ const ws = require('socket.io')(server, {
     }
 })
 
-// ************* conexion a MongoDB
+// ************* MongoDB ************* 
 const mongoose = require('mongoose')
 const url = 'mongodb://localhost/SopesProyecto2'
 
@@ -45,36 +45,30 @@ mostrar = async () => {
 }
 
 // mostrar()
-// ************* conexion a MongoDB
+// ************* MongoDB *************
 
-// ************* conexion a Redis
-const redis = require('redis')
-const client = redis.createClient({
-    host: '0.0.0.0',
-    port: '6379',
+// ************* Redis *************
+const redis = require('redis');
+const client = redis.createClient();
+
+client.on("error", function (error) {
+    console.error("Error en conexion: ", error)
 })
 
-client.set('foo', 'bar', function (err, reply) {
+client.on('connect', function() {
+  console.log('Connected!');
+});
+
+client.get('range11_20', (err, reply) => {
+    if (err) console.log(err);
+    console.log(reply);
+});
+
+client.lrange('users', 0, 4, (err, reply) => {
+    if (err) console.log(err);
     console.log(reply)
 })
-
-client.get('foo', function (err, reply) {
-    console.log(reply)
-})
-/* 
-client.set('foo', 'bar', (err, reply) => {
-    if (err) throw err
-    console.log("antes de repuesta")
-    console.log(reply)
-
-    client.get('foo', (err, reply) => {
-        if (err) throw err
-        console.log(reply)
-    })
-}) */
-
-// ************* conexion a Redis
-
+// ************* Redis *************
 
 ws.on('connection', function (socket) {
     console.log('Nueva conexion: ', socket.id)
