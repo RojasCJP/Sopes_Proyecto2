@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 
 	"github.com/go-redis/redis/v8"
 	"github.com/gofiber/fiber/v2"
@@ -31,16 +32,19 @@ func main() {
 		user := new(User)
 
 		if err := c.BodyParser(user); err != nil {
+			fmt.Println("parser")
 			panic(err)
 		}
 
 		payload, err := json.Marshal(user)
 		if err != nil {
+			fmt.Println("marshal")
 			panic(err)
 		}
 
 		// Posting through the chanel
 		if err := redisClient.Publish(ctx, "send-user-data", payload).Err(); err != nil {
+			fmt.Println("publish")
 			panic(err)
 		}
 

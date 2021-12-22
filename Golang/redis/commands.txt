@@ -3,3 +3,6 @@ sudo service redis-server stop
 
 keys *
 lrange users 0 5
+
+// tenemos que instalar nano en todos los contenedores cuando corran en gpc
+// tenemos que cambiar el localhost de algunas y la ip de otras con nano 
