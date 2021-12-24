@@ -36,19 +36,19 @@ export class ChatComponent implements OnInit {
   ctx3: any;
   @ViewChild('graf3') graf3: any;
   graf_barr: any;
+
   rangos_valores: any
   array_rangos: number[]
+  array_usuarios: string[]
 
   constructor(private chatService: ChatService) {
     this.array_rangos = [0,0,0,0,0,0,0,0,0]
+    this.array_usuarios = ["","","","",""]
   }
 
   ngOnInit(): void {
-    this.chatService.listen('chat:message').subscribe((data) => {
-      this.recibirMensaje(data);
-    })
 
-    this.chatService.listen('chat:report').subscribe((data) => {
+    this.chatService.listen('chat:report_range').subscribe((data) => {
       this.rangos_valores = data
       if (data) { 
         if(data.valor==null){data.valor=0}
@@ -74,11 +74,18 @@ export class ChatComponent implements OnInit {
         console.log(this.array_rangos)
       }
       this.graf_barr.update()
-      setTimeout(()=>this.chatService.emit("chat:report", "0"),1000);
-      
-      
+      setTimeout(()=>this.chatService.emit("chat:report_range", "0"),1000);
     })
-    this.chatService.emit("chat:report", "0");
+
+    this.chatService.listen('chat:report_users').subscribe((data) => {
+      this.array_usuarios = data
+      console.log("redisdb users:", this.array_usuarios)
+      setTimeout(()=>this.chatService.emit("chat:report_users", "0"),1000);
+    })
+
+    // Activar los canales hacia el servidor
+    this.chatService.emit("chat:report_range", "0");
+    this.chatService.emit("chat:report_users", "0");
 
   }
 
@@ -170,23 +177,5 @@ export class ChatComponent implements OnInit {
     })
 
   }
-
-  enviarMensaje() {
-    let mensajeNuevo: MensajeInterface = {
-      texto: this.input_msj,
-      usuario: "Usuario quemado",
-      idUsuario: 0,
-      fecha: formatDate(new Date(), 'yyyy/MM/dd H:mm:ss', 'en-US', '+0600').toString()
-    }
-    
-    this.chatService.emit("chat:message", mensajeNuevo);
-    this.input_msj = ""
-  }
-
-  recibirMensaje(data: MensajeInterface) {
-    this.mensajes.push(data)
-  }
-
-  
 
 }

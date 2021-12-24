@@ -1,36 +1,3 @@
-<div class="container-fluid">
-  <div class="row justify-content-center mt-5">
-    <div class="col-6 align-self-center">
-      <div class="overflow-auto" style="max-height: 500px; max-width: 630px">
-        <div
-          *ngFor="let mensaje of mensajes"
-          class="card"
-          style="border: white"
-        >
-          <div class="card-body bg-light">
-            <p>
-              <strong>{{ mensaje.usuario }}</strong
-              >: {{ mensaje.texto }}
-            </p>
-          </div>
-        </div>
-      </div>
-      <div class="input-group mb-3">
-        <input
-          #inputMensaje
-          [(ngModel)]="input_msj"
-          type="text"
-          class="form-control"
-          placeholder="Mensaje"
-        />
-        <button (click)="enviarMensaje()" class="btn btn-primary" type="button">
-          Enviar
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
-
 <h4>Recopilación de datos almacenados en MongoDB.</h4>
 <h4>Top 3 de áreas con mayor vacunados con esquema completo en MongoDB.</h4>
 <h4>
@@ -56,6 +23,13 @@
   </div>
 </div>
 <h4>Las últimas 5 personas vacunadas almacenadas en Redis.</h4>
+
+<ul *ngFor="let user of array_usuarios; let i = index" [attr.data-index]="i" class="list-group text-center">
+  <li class="list-group-item list-group-item-primary">
+    {{i+1}}. {{user}}
+  </li>
+</ul>
+
 <h4>Gráfico de barras de rango de edad de los vacunados en Redis</h4>
 <div class="row text-center">
   <div class="col">
