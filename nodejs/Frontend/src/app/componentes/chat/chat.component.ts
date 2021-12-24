@@ -42,13 +42,24 @@ export class ChatComponent implements OnInit {
   array_usuarios: string[]
   array_datos_alm: any[]
   array_top_areas: any[]
+  array_graf_1: number[]
+  array_graf_1_aux: string[]
+  array_graf_1_colors: any[]
+  array_graf_2: number[]
+  array_graf_2_aux: string[]
+  array_graf_2_colors: any[]
 
   constructor(private chatService: ChatService) {
     this.array_rangos = [0,0,0,0,0,0,0,0,0]
     this.array_usuarios = ["","","","",""]
     this.array_datos_alm = []
     this.array_top_areas = []
-
+    this.array_graf_1 = []
+    this.array_graf_1_aux = []
+    this.array_graf_1_colors= []
+    this.array_graf_2 = []
+    this.array_graf_2_aux = []
+    this.array_graf_2_colors= []
   }
 
   ngOnInit(): void {
@@ -89,14 +100,57 @@ export class ChatComponent implements OnInit {
 
     this.chatService.listen('chat:report_datos_alm').subscribe((data) => {
       this.array_datos_alm = data
-      console.log("mongodb datos almacenados:", this.array_datos_alm)
       setTimeout(()=>this.chatService.emit("chat:report_datos_alm", "0"),1000);
     })
 
     this.chatService.listen('chat:report_top_areas').subscribe((data) => {
       this.array_top_areas = data
-      console.log("mongodb areas:", this.array_top_areas)
       setTimeout(()=>this.chatService.emit("chat:report_top_areas", "0"),1000);
+    })
+
+    this.chatService.listen('chat:graf_cir1').subscribe((data) => {
+      var auxiliar1 = data.datos
+      var auxiliar2 = data.total
+      for (let i = 0; i < auxiliar1.length; i++) {
+        for (let j = 0; j < auxiliar2.length; j++) {
+          if (auxiliar1[i]._id.location == auxiliar2[j]._id.location) { 
+            auxiliar1[i].datos = (auxiliar1[i].datos/auxiliar2[j].datos)*100  
+          }
+        }
+      }
+      for (let index = 0; index < auxiliar1.length; index++) {
+        this.array_graf_1.push((auxiliar1[index].datos))
+        this.array_graf_1_aux.push(auxiliar1[index]._id.location)
+        this.array_graf_1_colors.push("rgb("+Math.round(Math.random() * 255)+", "+Math.round(Math.random()*255)+", "+Math.round(Math.random()*255)+")")
+      }
+      //console.log(this.array_graf_1_colors)
+      this.graf_cir_dosis.update()
+      this.array_graf_1_aux=[]
+      this.array_graf_1=[]
+      setTimeout(()=>this.chatService.emit("chat:graf_cir1", "0"),1000);
+    })
+
+    this.chatService.listen('chat:graf_cir2').subscribe((data) => {
+      var auxiliar1 = data.datos
+      var auxiliar2 = data.total
+      for (let i = 0; i < auxiliar1.length; i++) {
+        for (let j = 0; j < auxiliar2.length; j++) {
+          if (auxiliar1[i]._id.location == auxiliar2[j]._id.location) { 
+            auxiliar1[i].datos = (auxiliar1[i].datos/auxiliar2[j].datos)*100  
+          }
+        }
+      }
+      for (let index = 0; index < auxiliar1.length; index++) {
+        this.array_graf_2.push((auxiliar1[index].datos))
+        this.array_graf_2_aux.push(auxiliar1[index]._id.location)
+        this.array_graf_2_colors.push("rgb("+Math.round(Math.random() * 255)+", "+Math.round(Math.random()*255)+", "+Math.round(Math.random()*255)+")")
+      }
+      console.log(this.array_graf_2_colors)
+      this.graf_cir_esq.update()
+      this.array_graf_2_aux=[]
+      this.array_graf_2=[]
+      
+      setTimeout(()=>this.chatService.emit("chat:graf_cir2", "0"),1000);
     })
 
     // Activar los canales hacia el servidor
@@ -104,6 +158,8 @@ export class ChatComponent implements OnInit {
     this.chatService.emit("chat:report_users", "0");
     this.chatService.emit("chat:report_datos_alm", "0");
     this.chatService.emit("chat:report_top_areas", "0");
+    this.chatService.emit("chat:graf_cir1", "0");
+    this.chatService.emit("chat:graf_cir2", "0");
   }
 
   ngAfterViewInit() {
@@ -118,19 +174,11 @@ export class ChatComponent implements OnInit {
     this.graf_cir_dosis = new Chart(this.ctx, {
       type: 'pie',
       data: {
-        labels: [
-          'Red',
-          'Blue',
-          'Yellow'
-        ],
+        labels: this.array_graf_1_aux,
         datasets: [{
           label: 'My first ds',
-          data: [300, 50, 100],
-          backgroundColor: [
-            'rgb(255, 99, 132)',
-            'rgb(54, 162, 235)',
-            'rgb(255, 205, 86)'
-          ]
+          data: this.array_graf_1,
+          backgroundColor: this.array_graf_1_colors
         }]
       }
     })
@@ -138,19 +186,11 @@ export class ChatComponent implements OnInit {
     this.graf_cir_esq = new Chart(this.ctx2, {
       type: 'pie',
       data: {
-        labels: [
-          'Morado',
-          'Celeste',
-          'Verde'
-        ],
+        labels: this.array_graf_2_aux,
         datasets: [{
           label: 'My first ds',
-          data: [300, 50, 100],
-          backgroundColor: [
-            'rgb(153, 51, 255)',
-            'rgb(102, 178, 255)',
-            'rgb(100, 255, 178)'
-          ]
+          data: this.array_graf_2,
+          backgroundColor:this.array_graf_2_colors
         }]
       }
     }) 

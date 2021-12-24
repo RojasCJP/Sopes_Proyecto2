@@ -50,9 +50,39 @@ async function get_top_areas() {
         { $sort: { total: -1 } },
         { $limit: 3 }
     ])
-    console.log("nodejs : ", areas)
     ws.sockets.emit('chat:report_top_areas', areas)
 }
+
+async function graf_cir1() {
+    const datos = await PersonaModel.aggregate([
+        { $match: { "n_dose": { $eq: 1 } } },
+        { $group: { _id: { location: "$location", dose: "$n_dose" }, datos: { $sum: 1 } } }
+    ])
+    const total = await PersonaModel.aggregate([
+        { $group: { _id: { location: "$location" }, datos: { $sum: 1 } } }
+    ])
+
+    console.log(datos)
+    console.log(total)
+
+    ws.sockets.emit('chat:graf_cir1', { datos: datos, total: total })
+}
+
+async function graf_cir2() {
+    const datos = await PersonaModel.aggregate([
+        { $match: { "n_dose": { $eq: 2 } } },
+        { $group: { _id: { location: "$location", dose: "$n_dose" }, datos: { $sum: 1 } } }
+    ])
+    const total = await PersonaModel.aggregate([
+        { $group: { _id: { location: "$location" }, datos: { $sum: 1 } } }
+    ])
+
+    console.log(datos)
+    console.log(total)
+
+    ws.sockets.emit('chat:graf_cir2', { datos: datos, total: total })
+}
+
 
 
 
@@ -115,6 +145,13 @@ ws.on('connection', async function (socket) {
 
     socket.on('chat:report_top_areas', (data) => {
         get_top_areas()
+    })
+
+    socket.on('chat:graf_cir1', (data) => {
+        graf_cir1()
+    })
+    socket.on('chat:graf_cir2', (data) => {
+        graf_cir2()
     })
 
 })
