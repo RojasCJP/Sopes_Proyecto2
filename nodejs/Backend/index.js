@@ -39,10 +39,22 @@ const personaSchema = mongoose.Schema({
 
 const PersonaModel = mongoose.model('datos', personaSchema)
 
-mostrar = async () => {
+async function get_datos_alm() {
     const personas = await PersonaModel.find()
-    console.log(personas)
+    ws.sockets.emit('chat:report_datos_alm', personas)
 }
+
+async function get_top_areas() {
+    const areas = await PersonaModel.aggregate([
+        { $group: { _id: "$location", total: { $sum: 1 } } },
+        { $sort: { total: -1 } },
+        { $limit: 3 }
+    ])
+    console.log("nodejs : ", areas)
+    ws.sockets.emit('chat:report_top_areas', areas)
+}
+
+
 
 // mostrar()
 // ************* MongoDB *************
@@ -69,7 +81,7 @@ async function get_range(range) {
     })
 }
 
-async function get_usuarios() {    
+async function get_usuarios() {
     client.lrange('users', 0, 4, (err, reply) => {
         if (err) console.log(err)
         ws.sockets.emit('chat:report_users', reply)
@@ -95,6 +107,14 @@ ws.on('connection', async function (socket) {
 
     socket.on('chat:report_users', (data) => {
         get_usuarios()
+    })
+
+    socket.on('chat:report_datos_alm', (data) => {
+        get_datos_alm()
+    })
+
+    socket.on('chat:report_top_areas', (data) => {
+        get_top_areas()
     })
 
 })

@@ -40,10 +40,15 @@ export class ChatComponent implements OnInit {
   rangos_valores: any
   array_rangos: number[]
   array_usuarios: string[]
+  array_datos_alm: any[]
+  array_top_areas: any[]
 
   constructor(private chatService: ChatService) {
     this.array_rangos = [0,0,0,0,0,0,0,0,0]
     this.array_usuarios = ["","","","",""]
+    this.array_datos_alm = []
+    this.array_top_areas = []
+
   }
 
   ngOnInit(): void {
@@ -71,7 +76,6 @@ export class ChatComponent implements OnInit {
         } else if (data.id == 'range81_end') {
           this.array_rangos[8]=data.valor        
         }
-        console.log(this.array_rangos)
       }
       this.graf_barr.update()
       setTimeout(()=>this.chatService.emit("chat:report_range", "0"),1000);
@@ -79,14 +83,27 @@ export class ChatComponent implements OnInit {
 
     this.chatService.listen('chat:report_users').subscribe((data) => {
       this.array_usuarios = data
-      console.log("redisdb users:", this.array_usuarios)
+      //console.log("redisdb users:", this.array_usuarios)
       setTimeout(()=>this.chatService.emit("chat:report_users", "0"),1000);
+    })
+
+    this.chatService.listen('chat:report_datos_alm').subscribe((data) => {
+      this.array_datos_alm = data
+      console.log("mongodb datos almacenados:", this.array_datos_alm)
+      setTimeout(()=>this.chatService.emit("chat:report_datos_alm", "0"),1000);
+    })
+
+    this.chatService.listen('chat:report_top_areas').subscribe((data) => {
+      this.array_top_areas = data
+      console.log("mongodb areas:", this.array_top_areas)
+      setTimeout(()=>this.chatService.emit("chat:report_top_areas", "0"),1000);
     })
 
     // Activar los canales hacia el servidor
     this.chatService.emit("chat:report_range", "0");
     this.chatService.emit("chat:report_users", "0");
-
+    this.chatService.emit("chat:report_datos_alm", "0");
+    this.chatService.emit("chat:report_top_areas", "0");
   }
 
   ngAfterViewInit() {

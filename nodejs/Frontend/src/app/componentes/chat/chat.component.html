@@ -1,5 +1,99 @@
-<h4>Recopilación de datos almacenados en MongoDB.</h4>
-<h4>Top 3 de áreas con mayor vacunados con esquema completo en MongoDB.</h4>
+<div class="accordion" id="accordionExample">
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="headingOne">
+      <button
+        class="accordion-button"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#collapseOne"
+        aria-expanded="false"
+        aria-controls="collapseOne"
+      >
+        Recopilación de datos almacenados en MongoDB
+      </button>
+    </h2>
+    <div
+      id="collapseOne"
+      class="accordion-collapse collapse"
+      aria-labelledby="headingOne"
+      data-bs-parent="#accordionExample"
+    >
+      <div class="accordion-body">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Name</th>
+              <th scope="col">Location</th>
+              <th scope="col">Age</th>
+              <th scope="col">Vaccine_type</th>
+              <th scope="col">N_dose</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="let us of array_datos_alm; let i = index"
+              [attr.data-index]="i"
+            >
+              <th scope="row">{{ i }}</th>
+              <td>{{ us.name }}</td>
+              <td>{{ us.location }}</td>
+              <td>{{ us.age }}</td>
+              <td>{{ us.vaccine_type }}</td>
+              <td>{{ us.n_dose }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="accordion" id="accordionExample">
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="headingTwo">
+      <button
+        class="accordion-button collapsed"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#collapseTwo"
+        aria-expanded="false"
+        aria-controls="collapseTwo"
+      >
+        Top 3 de áreas con mayor vacunados con esquema completo en MongoDB.
+      </button>
+    </h2>
+    <div
+      id="collapseTwo"
+      class="accordion-collapse collapse"
+      aria-labelledby="headingTwo"
+      data-bs-parent="#accordionExample"
+    >
+      <div class="accordion-body">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Area</th>
+              <th scope="col">Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="let area of array_top_areas; let i = index"
+              [attr.data-index]="i"
+            >
+              <th scope="row">{{ i }}</th>
+              <td>{{ area._id }}</td>
+              <td>{{ area.total }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
 <h4>
   Gráfico circular del porcentaje de vacunados, una dosis, por departamentos,
   etc., en MongoDB.
@@ -24,9 +118,13 @@
 </div>
 <h4>Las últimas 5 personas vacunadas almacenadas en Redis.</h4>
 
-<ul *ngFor="let user of array_usuarios; let i = index" [attr.data-index]="i" class="list-group text-center">
+<ul
+  *ngFor="let user of array_usuarios; let i = index"
+  [attr.data-index]="i"
+  class="list-group text-center"
+>
   <li class="list-group-item list-group-item-primary">
-    {{i+1}}. {{user}}
+    {{ i + 1 }}. {{ user }}
   </li>
 </ul>
 
