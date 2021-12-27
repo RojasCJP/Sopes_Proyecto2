@@ -10,7 +10,7 @@ import { MensajeInterface } from 'src/app/estructuras/mensaje_interface';
 export class ChatService {
 
   private socket: Socket;
-  private url = 'http://localhost:10000'; 
+  private url = 'http://104.197.223.66:10000'; 
 
   constructor() {
     this.socket = io(this.url)      // Realizar la conexion con el servidor
