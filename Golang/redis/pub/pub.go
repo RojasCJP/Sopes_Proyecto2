@@ -9,6 +9,8 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
+const urlRedis = "localhost:6379"
+
 type User struct {
 	Name         string `json:"name"`
 	Location     string `json:"location"`
@@ -20,7 +22,7 @@ type User struct {
 var ctx = context.Background()
 
 var redisClient = redis.NewClient(&redis.Options{
-	Addr:     "localhost:6379",
+	Addr:     urlRedis,
 	Password: "", // no password set
 	DB:       0,  // use default DB
 })
