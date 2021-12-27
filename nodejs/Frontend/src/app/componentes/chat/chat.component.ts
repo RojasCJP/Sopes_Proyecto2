@@ -50,7 +50,7 @@ export class ChatComponent implements OnInit {
   array_graf_2_colors: any[]
 
   constructor(private chatService: ChatService) {
-    this.array_rangos = [0,0,0,0,0,0,0,0,0]
+    this.array_rangos = [0,0,0,0,0,0]
     this.array_usuarios = ["","","","",""]
     this.array_datos_alm = []
     this.array_top_areas = []
@@ -68,25 +68,17 @@ export class ChatComponent implements OnInit {
       this.rangos_valores = data
       if (data) { 
         if(data.valor==null){data.valor=0}
-        if (data.id == 'range0_10') {
+        if (data.id == 'range0_11') {
           this.array_rangos[0]=data.valor
-        } else if (data.id == 'range11_20') {
+        } else if (data.id == 'range12_18') {
           this.array_rangos[1]=data.valor        
-        } else if (data.id == 'range21_30') {
+        } else if (data.id == 'range19_26') {
           this.array_rangos[2]=data.valor        
-        } else if (data.id == 'range31_40') {
+        } else if (data.id == 'range27_59') {
           this.array_rangos[3]=data.valor        
-        } else if (data.id == 'range41_50') {
+        } else if (data.id == 'range60_end') {
           this.array_rangos[4]=data.valor        
-        } else if (data.id == 'range51_60') {
-          this.array_rangos[5]=data.valor        
-        } else if (data.id == 'range61_70') {
-          this.array_rangos[6]=data.valor        
-        } else if (data.id == 'range71_80') {
-          this.array_rangos[7]=data.valor        
-        } else if (data.id == 'range81_end') {
-          this.array_rangos[8]=data.valor        
-        }
+        } 
       }
       this.graf_barr.update()
       setTimeout(()=>this.chatService.emit("chat:report_range", "0"),1000);
@@ -145,7 +137,7 @@ export class ChatComponent implements OnInit {
         this.array_graf_2_aux.push(auxiliar1[index]._id.location)
         this.array_graf_2_colors.push("rgb("+Math.round(Math.random() * 255)+", "+Math.round(Math.random()*255)+", "+Math.round(Math.random()*255)+")")
       }
-      console.log(this.array_graf_2_colors)
+      //console.log(this.array_graf_2_colors)
       this.graf_cir_esq.update()
       this.array_graf_2_aux=[]
       this.array_graf_2=[]
@@ -198,7 +190,12 @@ export class ChatComponent implements OnInit {
     this.graf_barr = new Chart(this.ctx3, {
       type: 'bar',
       data: {
-        labels: ['0-10','11-20','21-30','31-40','41-50','51-60', '61-70', '71-80', '81-end'],
+        labels: ['Niños', 'Adolescentes', 'Jovenes', 'Adultos', 'Vejez'],
+        /* range0_11
+        range12_18
+        range19_26
+        range27_59
+        range60_end */
         datasets: [{
           label: "",
           data: this.array_rangos,
@@ -207,16 +204,14 @@ export class ChatComponent implements OnInit {
             'rgba(255, 159, 64, 0.2)',
             'rgba(255, 205, 86, 0.2)',
             'rgba(75, 192, 192, 0.2)',
-            'rgba(54, 162, 235, 0.2)',
-            'rgba(153, 102, 255, 0.2)'
+            'rgba(54, 162, 235, 0.2)'
           ],
           borderColor: [
             'rgb(255, 99, 132)',
             'rgb(255, 159, 64)',
             'rgb(255, 205, 86)',
             'rgb(75, 192, 192)',
-            'rgb(54, 162, 235)',
-            'rgb(153, 102, 255)'
+            'rgb(54, 162, 235)'
           ],
           borderWidth: 1
         }]

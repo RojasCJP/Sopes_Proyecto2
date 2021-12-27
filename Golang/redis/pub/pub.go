@@ -28,7 +28,7 @@ var redisClient = redis.NewClient(&redis.Options{
 func main() {
 	app := fiber.New()
 
-	app.Post("/", func(c *fiber.Ctx) error {
+	app.Post("/insert", func(c *fiber.Ctx) error {
 		user := new(User)
 
 		if err := c.BodyParser(user); err != nil {
@@ -49,24 +49,16 @@ func main() {
 		}
 
 		// Verifying age range and writing to redis - database
-		if user.Age >= 0 && user.Age <= 10 {
-			redisClient.Incr(ctx, "range0_10")
-		} else if user.Age >= 11 && user.Age <= 20 {
-			redisClient.Incr(ctx, "range11_20")
-		} else if user.Age >= 21 && user.Age <= 30 {
-			redisClient.Incr(ctx, "range21_30")
-		} else if user.Age >= 31 && user.Age <= 40 {
-			redisClient.Incr(ctx, "range31_40")
-		} else if user.Age >= 41 && user.Age <= 50 {
-			redisClient.Incr(ctx, "range41_50")
-		} else if user.Age >= 51 && user.Age <= 60 {
-			redisClient.Incr(ctx, "range51_60")
-		} else if user.Age >= 61 && user.Age <= 70 {
-			redisClient.Incr(ctx, "range61_70")
-		} else if user.Age >= 71 && user.Age <= 80 {
-			redisClient.Incr(ctx, "range71_80")
+		if user.Age >= 0 && user.Age <= 11 {
+			redisClient.Incr(ctx, "range0_11")
+		} else if user.Age >= 12 && user.Age <= 18 {
+			redisClient.Incr(ctx, "range12_18")
+		} else if user.Age >= 19 && user.Age <= 26 {
+			redisClient.Incr(ctx, "range19_26")
+		} else if user.Age >= 27 && user.Age <= 59 {
+			redisClient.Incr(ctx, "range27_59")
 		} else {
-			redisClient.Incr(ctx, "range81_90")
+			redisClient.Incr(ctx, "range60_end")
 		}
 
 		// Save name to report the last five vaccinated

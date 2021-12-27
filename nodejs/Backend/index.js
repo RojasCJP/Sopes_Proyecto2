@@ -124,15 +124,11 @@ ws.on('connection', async function (socket) {
     console.log('Nueva conexion: ', socket.id)
 
     socket.on('chat:report_range', async (data) => {
-        get_range("range0_10")
-        get_range("range11_20")
-        get_range("range21_30")
-        get_range("range31_40")
-        get_range("range41_50")
-        get_range("range51_60")
-        get_range("range61_70")
-        get_range("range71_80")
-        get_range("range81_end")
+        get_range("range0_11")
+        get_range("range12_18")
+        get_range("range19_26")
+        get_range("range27_59")
+        get_range("range60_end")
     })
 
     socket.on('chat:report_users', (data) => {
