@@ -1,2 +1,7 @@
-FROM nginx:alpine
-COPY Frontend/dist/Frontend /usr/share/nginx/html
+FROM archlinux
+COPY script.sh /script.sh
+COPY Frontend /home/Frontend
+RUN pacman -Syu --noconfirm
+RUN pacman -S nodejs npm --noconfirm
+
+ENTRYPOINT ["/script.sh"]
