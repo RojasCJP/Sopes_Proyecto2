@@ -15,8 +15,8 @@ import (
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 )
 
-const urlRedis = "localhost:6379"
-const urlMongo = "mongodb://localhost:27017/"
+const urlRedis = "34.135.96.5:6379"
+const urlMongo = "mongodb://34.135.96.5:27017/"
 
 type User struct {
 	Name         string `json:"name"`
