@@ -19,8 +19,8 @@ import (
 	"github.com/go-redis/redis/v8"
 )
 
-const urlRedis = "localhost:6379"
-const urlMongo = "mongodb://localhost:27017/"
+const urlRedis = "34.135.96.5:6379"
+const urlMongo = "mongodb://34.135.96.5:27017/"
 
 const (
 	port = ":50051"
