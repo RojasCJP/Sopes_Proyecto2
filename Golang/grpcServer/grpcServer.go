@@ -23,7 +23,7 @@ const urlRedis = "34.135.96.5:6379"
 const urlMongo = "mongodb://34.135.96.5:27017/"
 
 const (
-	port = ":50051"
+	port = "grpc-client"
 )
 
 type UserManagementServer struct {
@@ -34,8 +34,8 @@ var ctx = context.Background()
 
 var redisClient = redis.NewClient(&redis.Options{
 	Addr:     urlRedis,
-	Password: "", // no password set
-	DB:       0,  // use default DB
+	Password: "rojas", // no password set
+	DB:       0,       // use default DB
 })
 
 func main() {

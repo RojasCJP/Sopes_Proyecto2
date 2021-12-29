@@ -2,44 +2,44 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: green
-  name: green
-  namespace: minamespace
+    app: redis-pub
+  name: redis-pub
+  namespace: project
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: green
+      app: redis-pub
   template:
     metadata:
       labels:
-        app: green
+        app: redis-pub
     spec:
       containers:
-      - image: bernaldrpp/green
+      - image: rojascjp/sopesproyect2:redis-pub
         imagePullPolicy: Always
-        name: green
+        name: redis-pub
 ---
 apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: green
-  name: green
-  namespace: minamespace
+    app: redis-pub
+  name: redis-pub
+  namespace: project
 spec:
   ports:
   - port: 8080
     protocol: TCP
-    targetPort: 8080
+    targetPort: 3000
   selector:
-    app: green
+    app: redis-pub
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: green-ingress
-  namespace: minamespace
+  name: redis-pub-ingress
+  namespace: project
   annotations:
     nginx.ingress.kubernetes.io/configuration-snippet: |
       proxy_set_header l5d-dst-override $service_name.$namespace.svc.cluster.local:$service_port;
@@ -47,12 +47,16 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
+<<<<<<< HEAD:Kubernetes/blue.yaml
+    - host: blue.so1p2g1.tk
+=======
     - host: green.so1p2g1.tk
+>>>>>>> 733f63cd679dcce149a86c382907911ad05a228f:Kubernetes/pruebas/redis-pub.yaml
       http:
         paths:
           - backend:
               service:
-                name: green
+                name: redis-pub
                 port: 
                   number: 8080
             path: /

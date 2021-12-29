@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: redis-sub
+  name: redis-sub
+  namespace: project
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis-sub
+  template:
+    metadata:
+      labels:
+        app: redis-sub
+    spec:
+      containers:
+      - image: rojascjp/sopesproyect2:redis-sub
+        imagePullPolicy: Always
+        name: redis-sub
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: redis-sub
+  name: redis-sub
+  namespace: project
+spec:
+  ports:
+  - port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: redis-sub
