@@ -2,44 +2,44 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: green
-  name: green
-  namespace: minamespace
+    app: grpc-client
+  name: grpc-client
+  namespace: project
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: green
+      app: grpc-client
   template:
     metadata:
       labels:
-        app: green
+        app: grpc-client
     spec:
       containers:
-      - image: bernaldrpp/green
+      - image: rojascjp/sopesproyect2:client
         imagePullPolicy: Always
-        name: green
+        name: grpc-client
 ---
 apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: green
-  name: green
-  namespace: minamespace
+    app: grpc-client
+  name: grpc-client
+  namespace: project
 spec:
   ports:
   - port: 8080
     protocol: TCP
-    targetPort: 8080
+    targetPort: 4300
   selector:
-    app: green
+    app: grpc-client
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: green-ingress
-  namespace: minamespace
+  name: grpc-client-ingress
+  namespace: project
   annotations:
     nginx.ingress.kubernetes.io/configuration-snippet: |
       proxy_set_header l5d-dst-override $service_name.$namespace.svc.cluster.local:$service_port;
@@ -47,12 +47,12 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: green.labso1-vac2021.tk
+    - host: blue.so1p2g1.tk
       http:
         paths:
           - backend:
               service:
-                name: green
+                name: grpc-client
                 port: 
                   number: 8080
             path: /

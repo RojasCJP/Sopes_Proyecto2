@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: grpc-server
+  name: grpc-server
+  namespace: project
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: grpc-server
+  template:
+    metadata:
+      labels:
+        app: grpc-server
+    spec:
+      containers:
+      - image: rojascjp/sopesproyect2:server
+        imagePullPolicy: Always
+        name: grpc-server
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: grpc-server
+  name: grpc-server
+  namespace: project
+spec:
+  ports:
+  - port: 8080
+    protocol: TCP
+    targetPort: 50051
+  selector:
+    app: grpc-server

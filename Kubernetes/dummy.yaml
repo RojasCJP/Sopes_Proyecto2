@@ -4,7 +4,7 @@ metadata:
   labels:
     app: dummy
   name: dummy
-  namespace: minamespace
+  namespace: project
 spec:
   replicas: 1
   selector:
@@ -26,7 +26,7 @@ metadata:
   labels:
     app: dummy
   name: dummy
-  namespace: minamespace
+  namespace: project
 spec:
   ports:
   - port: 8080
@@ -39,7 +39,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: dummy-ingress
-  namespace: minamespace
+  namespace: project
   annotations:
     nginx.ingress.kubernetes.io/configuration-snippet: |
       proxy_set_header l5d-dst-override $service_name.$namespace.svc.cluster.local:$service_port;
@@ -47,7 +47,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: dummy.labso1-vac2021.tk
+    - host: load.so1p2g1.tk
       http:
         paths:
           - backend:
