@@ -16,7 +16,7 @@ spec:
         app: dummy
     spec:
       containers:
-      - image: bernaldrpp/blue
+      - image: bernaldrpp/green
         imagePullPolicy: Always
         name: dummy
 ---
@@ -47,7 +47,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: dummy.labso1-vac2021.tk
+    - host: deploy.so1p2g1.tk
       http:
         paths:
           - backend:

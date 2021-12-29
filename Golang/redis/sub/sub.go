@@ -15,8 +15,8 @@ import (
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 )
 
-const urlRedis = "localhost:6379"
-const urlMongo = "mongodb://localhost:27017/"
+const urlRedis = "34.135.96.5:6379"
+const urlMongo = "mongodb://34.135.96.5:27017/"
 
 type User struct {
 	Name         string `json:"name"`
@@ -30,8 +30,8 @@ var ctx = context.Background()
 
 var redisClient = redis.NewClient(&redis.Options{
 	Addr:     urlRedis,
-	Password: "", // no password set
-	DB:       0,  // use default DB
+	Password: "rojas", // no password set
+	DB:       0,       // use default DB
 })
 
 func main() {

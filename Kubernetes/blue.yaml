@@ -47,7 +47,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: blue.labso1-vac2021.tk
+    - host: blue.so1p2g1.tk
       http:
         paths:
           - backend:

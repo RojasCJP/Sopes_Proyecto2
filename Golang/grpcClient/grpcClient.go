@@ -18,7 +18,7 @@ import (
 )
 
 const (
-	address = "localhost:50051"
+	address = "grpc-server:50051"
 )
 
 func main() {
