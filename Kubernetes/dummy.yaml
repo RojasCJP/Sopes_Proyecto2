@@ -16,7 +16,7 @@ spec:
         app: dummy
     spec:
       containers:
-      - image: bernaldrpp/blue
+      - image: rojascjp/sopesproyect2:client
         imagePullPolicy: Always
         name: dummy
 ---
@@ -29,9 +29,9 @@ metadata:
   namespace: project
 spec:
   ports:
-  - port: 8080
+  - port: 80
     protocol: TCP
-    targetPort: 8080
+    targetPort: 4300
   selector:
     app: dummy
 ---
@@ -54,6 +54,6 @@ spec:
               service:
                 name: dummy
                 port: 
-                  number: 8080
+                  number: 80
             path: /
             pathType: Prefix
