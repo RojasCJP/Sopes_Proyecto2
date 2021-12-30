@@ -16,7 +16,7 @@ spec:
         app: dummy
     spec:
       containers:
-      - image: rojascjp/sopesproyect2:client
+      - image: rojascjp/sopesproyect2:backend
         imagePullPolicy: Always
         name: dummy
 ---
