@@ -2,43 +2,43 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: blue
-  name: blue
+    app: frontend
+  name: frontend
   namespace: project
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: blue
+      app: frontend
   template:
     metadata:
       labels:
-        app: blue
+        app: frontend
     spec:
       containers:
-      - image: bernaldrpp/blue
+      - image: rojascjp/sopesproyect2:frontend
         imagePullPolicy: Always
-        name: blue
+        name: frontend
 ---
 apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: blue
-  name: blue
+    app: frontend
+  name: frontend
   namespace: project
 spec:
   ports:
-  - port: 8080
+  - port: 80
     protocol: TCP
     targetPort: 8080
   selector:
-    app: blue
+    app: frontend
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: blue-ingress
+  name: frontend-ingress
   namespace: project
   annotations:
     nginx.ingress.kubernetes.io/configuration-snippet: |
@@ -47,13 +47,13 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: grpc.so1p2g1.tk
+    - host: www.so1p2g1.tk
       http:
         paths:
           - backend:
               service:
-                name: blue
+                name: frontend
                 port: 
-                  number: 8080
+                  number: 80
             path: /
             pathType: Prefix
