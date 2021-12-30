@@ -49,8 +49,8 @@ func main() {
 			panic(err)
 		}
 
-		client, context := Connection()
 		usuario := PbUser{Name: user.Name, Age: int32(user.Age), VaccineType: user.Vaccine_type, Location: user.Location, NDose: int32(user.N_dose)}
+		client, context := Connection()
 		InsertMongo(client, context, usuario)
 
 		fmt.Println("Received message from " + msg.Channel + " channel.")

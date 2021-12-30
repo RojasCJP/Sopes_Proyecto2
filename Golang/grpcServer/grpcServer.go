@@ -26,6 +26,8 @@ const (
 	port = ":80"
 )
 
+var contador = 1
+
 type UserManagementServer struct {
 	pb.UnimplementedUserManagmentServer
 }
@@ -98,13 +100,15 @@ func InsertMongo(client *mongo.Client, ctx context.Context, data pb.User) bool {
 	*/
 	var docs []interface{}
 	docs = append(docs, bson.D{{"name", data.Name}, {"location", data.Location}, {"age", data.Age}, {"vaccine_type", data.VaccineType}, {"n_dose", data.NDose}})
-
-	res, insertErr := collection.InsertMany(ctx, docs)
-	if insertErr != nil {
-		trigger = true
-		log.Fatal("insert error", insertErr)
+	if contador%2 == 0 {
+		contador += 1
+		res, insertErr := collection.InsertMany(ctx, docs)
+		if insertErr != nil {
+			trigger = true
+			log.Fatal("insert error", insertErr)
+		}
+		fmt.Println(res)
 	}
-	fmt.Println(res)
 
 	defer client.Disconnect(ctx)
 	return trigger

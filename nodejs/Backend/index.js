@@ -1,6 +1,7 @@
 const express = require('express')
 const cors = require('cors')
 const app = express()
+const http = require('http')
 
 app.set('port', 10000)
 app.use(cors([
@@ -16,7 +17,10 @@ app.use(router)
 router.get("/", function (req, res) {
     res.send("hola buenas desde node")
 })
-const server = app.listen(app.get('port'), () => {
+const server = http.createServer((req, res) => {
+    res.end("hola buenas desde http node")
+})
+server.listen(app.get('port'), () => {
     var host = server.address().address
     var port = server.address().port
     console.log('server on port', app.get('port'))
@@ -87,7 +91,7 @@ async function graf_cir2() {
         { $group: { _id: { location: "$location", dose: "$n_dose" }, datos: { $sum: 1 } } }
     ])
     const total = await PersonaModel.aggregate([
-        { $group: { _id: { location: "$location" }, datos: { $sum: 1 } } }
+        { $group: { _id: { location: "$n_dose" }, datos: { $sum: 1 } } }
     ])
 
     console.log(datos)

@@ -3,6 +3,11 @@
 cd ..
 cd home
 ls
-cd Backend
+cd Frontend
+npm install http-server -g
+npm install -g @angular/cli
 npm install
-node index.js
+ng build --prod
+cd dist
+http-server Frontend/
+top

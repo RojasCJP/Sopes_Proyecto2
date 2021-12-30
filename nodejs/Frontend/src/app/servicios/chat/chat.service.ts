@@ -10,7 +10,7 @@ import { MensajeInterface } from 'src/app/estructuras/mensaje_interface';
 export class ChatService {
 
   private socket: Socket;
-  private url = '35.239.14.50:30486'; 
+  private url = 'http://backend.so1p2g1.tk'; 
 
   constructor() {
     this.socket = io(this.url)      // Realizar la conexion con el servidor

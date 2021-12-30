@@ -14,7 +14,7 @@ class testApi(HttpUser):
         response = self.client.post("/insert",
                                     json=testApi.entrada[testApi.contador])
         testApi.contador += 1
-        if testApi.contador == 100:
+        if testApi.contador == len(testApi.entrada):
             testApi.contador = 0
             exit()
         json_var = response

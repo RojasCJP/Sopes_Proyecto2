@@ -1,7 +1,9 @@
-FROM node:17.3.0-alpine3.12
+FROM archlinux
 COPY script.sh /script.sh
-COPY Backend /home/Backend
+COPY Frontend /home/Frontend
+RUN pacman -Syu --noconfirm
+RUN pacman -S nodejs npm --noconfirm
+RUN pacman -S nano --noconfirm
 
-EXPOSE 10000
 
 ENTRYPOINT ["/script.sh"]
