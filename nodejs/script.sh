@@ -10,5 +10,4 @@ npm install
 ng build --prod
 cd dist
 http-server Frontend/
-cd ..
-ng serve
+top

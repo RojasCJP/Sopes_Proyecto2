@@ -30,8 +30,8 @@ var ctx = context.Background()
 
 var redisClient = redis.NewClient(&redis.Options{
 	Addr:     urlRedis,
-	Password: "", // no password set
-	DB:       0,  // use default DB
+	Password: "rojas", // no password set
+	DB:       0,       // use default DB
 })
 
 func main() {
