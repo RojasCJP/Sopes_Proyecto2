@@ -2,43 +2,43 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: redis-pub
-  name: redis-pub
+    app: grpc-client
+  name: grpc-client
   namespace: project
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: redis-pub
+      app: grpc-client
   template:
     metadata:
       labels:
-        app: redis-pub
+        app: grpc-client
     spec:
       containers:
-      - image: rojascjp/sopesproyect2:redis-pub
+      - image: rojascjp/sopesproyect2:client
         imagePullPolicy: Always
-        name: redis-pub
+        name: grpc-client
 ---
 apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: redis-pub
-  name: redis-pub
+    app: grpc-client
+  name: grpc-client
   namespace: project
 spec:
   ports:
-  - port: 8080
+  - port: 80
     protocol: TCP
-    targetPort: 3000
+    targetPort: 4300
   selector:
-    app: redis-pub
+    app: grpc-client
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: redis-pub-ingress
+  name: grpc-client-ingress
   namespace: project
   annotations:
     nginx.ingress.kubernetes.io/configuration-snippet: |
@@ -47,13 +47,13 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: green.so1p2g1.tk
+    - host: grpc.so1p2g1.tk
       http:
         paths:
           - backend:
               service:
-                name: redis-pub
+                name: grpc-client
                 port: 
-                  number: 8080
+                  number: 80
             path: /
             pathType: Prefix
