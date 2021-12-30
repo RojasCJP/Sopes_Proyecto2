@@ -23,7 +23,7 @@ const urlRedis = "34.135.96.5:6379"
 const urlMongo = "mongodb://34.135.96.5:27017/"
 
 const (
-	port = "grpc-client"
+	port = ":80"
 )
 
 type UserManagementServer struct {

@@ -10,9 +10,22 @@ app.use(cors([
     }
 ]))
 
-const server = app.listen(app.get('port'), '0.0.0.0', () => {
-    console.log('server on port', app.get('port'))
+var router = express.Router()
+app.use(router)
+
+router.get("/", function (req, res) {
+    res.send("hola buenas desde node")
 })
+const server = app.listen(app.get('port'), () => {
+    var host = server.address().address
+    var port = server.address().port
+    console.log('server on port', app.get('port'))
+    console.log('host ', host, "; port", port)
+})
+
+
+
+
 
 const ws = require('socket.io')(server, {
     cors: {
@@ -25,7 +38,7 @@ const ws = require('socket.io')(server, {
 
 // ************* MongoDB ************* 
 const mongoose = require('mongoose')
-const url = 'mongodb://localhost/SopesProyecto2'
+const url = 'mongodb://34.135.96.5:27017/SopesProyecto2'
 
 mongoose.connect(url, {})
     .then(() => console.log('conectado a mongo'))
@@ -91,7 +104,12 @@ async function graf_cir2() {
 
 // ************* Redis *************
 const redis = require('redis')
-const client = redis.createClient()
+const bodyParser = require('body-parser')
+const client = redis.createClient(
+    {
+        url: 'redis://juan:rojas@34.135.96.5:6379'
+    }
+)
 
 
 client.on("error", function (error) {

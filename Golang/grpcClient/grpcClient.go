@@ -18,7 +18,7 @@ import (
 )
 
 const (
-	address = "grpc-server"
+	address = "grpc-server:80"
 )
 
 func main() {
@@ -36,8 +36,14 @@ func LevantarServidor() {
 	}
 	router.HandleFunc("/insert", insertData).Methods("POST")
 	router.HandleFunc("/test", echoEndPoint).Methods("POST")
+	router.HandleFunc("/", welcome).Methods("GET")
 	fmt.Println("server in port " + port)
+	fmt.Println(address, "conexion al servidor")
 	http.ListenAndServe(":"+port, handlers.CORS(headers, methods, origins)(router))
+}
+
+func welcome(response http.ResponseWriter, request *http.Request) {
+	response.Write([]byte("hello from go client"))
 }
 
 func insertData(response http.ResponseWriter, request *http.Request) {
@@ -73,6 +79,7 @@ func echoEndPoint(response http.ResponseWriter, request *http.Request) {
 
 func Export(user pb.User) bool {
 	trigger := false
+
 	conn, err := grpc.Dial(address, grpc.WithInsecure(), grpc.WithBlock())
 
 	if err != nil {
