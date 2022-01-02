@@ -1,0 +1,53 @@
+gcloud container clusters create k8s-demo --num-nodes=1 --tags=allin,allout --enable-legacy-authorization --issue-client-certificate --preemptible --machine-type=n1-standard-2
+
+conectarse al cluster con el link de gcp
+	
+instalar linkerd	
+	curl -fsL https://run.linkerd.io/install | sh
+	export PATH=$PATH:$HOME/.linkerd2/bin
+	linkerd check --pre
+	linkerd install | kubectl apply -f -
+
+instalar dashboard
+	 linkerd viz install | kubectl apply -f -
+
+instalar helm o usar desde gcp
+	wget https://get.helm.sh/helm-v3.7.2-linux-amd64.tar.gz
+	tar -zxvf helm-v3.7.2-linux-amd64.tar.gz
+	mv linux-amd64/helm /usr/local/bin/helm
+	helm version
+
+instalar el ingress
+	helm repo add stable https://charts.helm.sh/stable
+	kubectl create namespace nginx-ingress
+	helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+	helm repo update
+	helm install nginx-ingress ingress-nginx/ingress-nginx -n nginx-ingress
+
+	#Listar
+	helm list -n nginx-ingress
+
+inyectar linkerd en el ingress controler
+	kubectl -n nginx-ingress get deployment nginx-ingress-ingress-nginx-controller -o yaml | linkerd inject --ingress --skip-inbound-ports 443 --skip-outbound-ports 443 - | kubectl apply -f -
+	kubectl get pods -n nginx-ingress
+	kubectl describe pods nginx-ingress-ingress-nginx-controller-64665dd6bc-dgkj4 -n nginx-ingress | grep "linkerd.io/inject: ingress"
+
+ejecucion de archivos yaml
+	kubectl create -f algo.yaml
+
+injectar linkerd
+	kubectl -n minamespace get deploy -o yaml | linkerd inject - | kubectl apply -f -
+
+obtener op de ingress controler para los subdominios
+	kubectl get all -n nginx-ingress
+
+
+** CALIFICACION **
+	cluester creado
+	nginx instalado
+	linkerd - despues se hace el inject
+	y el frontend
+
+appi dummy
+grpc´s 
+redi´s

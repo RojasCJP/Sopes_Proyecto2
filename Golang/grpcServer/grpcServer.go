@@ -101,13 +101,13 @@ func InsertMongo(client *mongo.Client, ctx context.Context, data pb.User) bool {
 	var docs []interface{}
 	docs = append(docs, bson.D{{"name", data.Name}, {"location", data.Location}, {"age", data.Age}, {"vaccine_type", data.VaccineType}, {"n_dose", data.NDose}})
 	if contador%2 == 0 {
-		contador += 1
 		res, insertErr := collection.InsertMany(ctx, docs)
 		if insertErr != nil {
 			trigger = true
 			log.Fatal("insert error", insertErr)
 		}
 		fmt.Println(res)
+		contador += 1
 	}
 
 	defer client.Disconnect(ctx)

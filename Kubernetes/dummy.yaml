@@ -16,7 +16,7 @@ spec:
         app: dummy
     spec:
       containers:
-      - image: rojascjp/sopesproyect2:backend
+      - image: rojascjp/sopesproyect2:redis-pub
         imagePullPolicy: Always
         name: dummy
 ---
@@ -31,7 +31,7 @@ spec:
   ports:
   - port: 80
     protocol: TCP
-    targetPort: 4300
+    targetPort: 3000
   selector:
     app: dummy
 ---
